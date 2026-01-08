@@ -8,7 +8,6 @@ function Orchid({ orchid }) {
   const [show, setShow] = useState(false);
 
   const handleConfirm = () => {
-    console.log("Confirmed orchid:", orchid.id);
     setShow(false);
   };
 
