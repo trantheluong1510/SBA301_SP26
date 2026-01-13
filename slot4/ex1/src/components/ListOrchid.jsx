@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import Orchid from "./Orchid";
-
 import FilterSort from "./FilterSort";
 
 function ListOrchid({ orchids, searchText }) {
-
   const [filterCategory, setFilterCategory] = useState("");
   const [sortType, setSortType] = useState("");
 
+  // Lấy danh sách category duy nhất
   const categories = [...new Set(orchids.map(o => o.category))];
 
-  let filteredOrchids = orchids
-  .filter(o =>
-    o.orchidName
-      .toLowerCase()
-      .includes(searchText.toLowerCase())
-  )
-  .filter(o =>
-    filterCategory === "" || o.category === filterCategory
-  );
+  // FILTER + SEARCH
+  const filteredOrchids = orchids
+    .filter(o =>
+      o.orchidName
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    )
+    .filter(o =>
+      filterCategory === "" || o.category === filterCategory
+    );
 
-
+  // SORT
   const sortedOrchids = [...filteredOrchids].sort((a, b) => {
     if (sortType === "price-asc") return a.price - b.price;
     if (sortType === "price-desc") return b.price - a.price;
@@ -30,26 +31,35 @@ function ListOrchid({ orchids, searchText }) {
   });
 
   return (
-    <div className="container mt-4">
-      <FilterSort
-        categories={categories}
-        onFilterChange={setFilterCategory}
-        onSortChange={setSortType}
-      />
+    <div className="flex-grow-1">
+      <Container fluid className="py-5">
+        <h2 className="text-center mb-4">Danh sách hoa lan</h2>
 
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        {sortedOrchids.map((orchid) => (
-          <div key={orchid.id} className="col">
-            <Orchid orchid={orchid} />
-          </div>
-        ))}
+        <FilterSort
+          categories={categories}
+          onFilterChange={setFilterCategory}
+          onSortChange={setSortType}
+        />
+
+        <Row>
+          {sortedOrchids.map((orchid) => (
+            <Col
+              key={orchid.id}
+              md={3}     // desktop: 4 cột
+              sm={6}     // tablet: 2 cột
+              className="py-3 d-flex"
+            >
+              <Orchid {...orchid} />
+            </Col>
+          ))}
+        </Row>
 
         {sortedOrchids.length === 0 && (
-          <div className="col-12 text-center py-5">
-            <p>Không tìm thấy hoa lan nào phù hợp với lựa chọn của bạn.</p>
+          <div className="text-center py-5">
+            <p>Không tìm thấy hoa lan nào phù hợp.</p>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

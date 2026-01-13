@@ -4,17 +4,21 @@ import Button from "react-bootstrap/Button";
 import ConfirmModal from "./ConfirmModal";
 import "./Orchid.css";
 
-function Orchid({ orchid }) {
+function Orchid({
+  id,
+  orchidName,
+  image,
+  category,
+  description,
+  price,
+  isSpecial
+}) {
   const [show, setShow] = useState(false);
-
-  const handleConfirm = () => {
-    setShow(false);
-  };
 
   return (
     <>
-      <Card className="orchid-card text-center position-relative">
-        {orchid.isSpecial && (
+      <Card className="orchid-card h-100 text-center position-relative">
+        {isSpecial && (
           <span className="badge bg-danger special-badge">
             Special
           </span>
@@ -22,16 +26,16 @@ function Orchid({ orchid }) {
 
         <Card.Img
           variant="top"
-          src={orchid.image}
+          src={image}
           className="orchid-img"
-          alt={orchid.orchidName}
+          alt={orchidName}
         />
 
         <Card.Body>
-          <Card.Title>{orchid.orchidName}</Card.Title>
+          <Card.Title>{orchidName}</Card.Title>
 
           <Card.Subtitle className="mb-3 text-muted">
-            Category: {orchid.category}
+            Category: {category}
           </Card.Subtitle>
 
           <Button onClick={() => setShow(true)}>
@@ -43,23 +47,19 @@ function Orchid({ orchid }) {
       <ConfirmModal
         show={show}
         handleClose={() => setShow(false)}
-        title={orchid.orchidName}
+        title={orchidName}
         body={
           <>
-            <img
-              src={orchid.image}
-              alt={orchid.orchidName}
-              className="img-fluid mb-2"
-            />
-            <p><strong>ID:</strong> {orchid.id}</p>
-            <p><strong>Category:</strong> {orchid.category}</p>
-            <p><strong>Description:</strong> {orchid.description}</p>
+            <img src={image} alt={orchidName} className="img-fluid mb-2" />
+            <p><strong>ID:</strong> {id}</p>
+            <p><strong>Category:</strong> {category}</p>
+            <p><strong>Description:</strong> {description}</p>
             <p className="fw-bold text-success">
-              Price: {orchid.price}
+              Price: {price}
             </p>
           </>
         }
-        onConfirm={handleConfirm}
+        onConfirm={() => setShow(false)}
       />
     </>
   );

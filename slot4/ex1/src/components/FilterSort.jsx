@@ -1,5 +1,4 @@
 // FilterSort.jsx to filter and sort orchids
-import React from "react";
 import { Form, Row, Col } from "react-bootstrap";
 
 function FilterSort({ categories, onFilterChange, onSortChange }) {
