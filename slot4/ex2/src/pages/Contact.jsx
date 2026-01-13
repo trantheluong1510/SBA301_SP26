@@ -115,7 +115,6 @@ function Contact() {
             <p><b>Name:</b> {form.name}</p>
             <p><b>Email:</b> {form.email}</p>
             <p><b>Message:</b> {form.message}</p>
-            <p><b>Agreed:</b> Yes</p>
           </>
         }
         onConfirm={() => {

@@ -1,19 +1,17 @@
 import { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import ConfirmModal from "./ConfirmModal";
 import "./Orchid.css";
+import { useNavigate } from "react-router-dom";
 
 function Orchid({
   id,
   orchidName,
   image,
   category,
-  description,
-  price,
   isSpecial
 }) {
-  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -38,29 +36,15 @@ function Orchid({
             Category: {category}
           </Card.Subtitle>
 
-          <Button onClick={() => setShow(true)}>
+          <Button
+            onClick={() => navigate(`/orchid/${id}`)}
+          >
             Detail
           </Button>
         </Card.Body>
       </Card>
 
-      <ConfirmModal
-        show={show}
-        handleClose={() => setShow(false)}
-        title={orchidName}
-        body={
-          <>
-            <img src={image} alt={orchidName} className="img-fluid mb-2" />
-            <p><strong>ID:</strong> {id}</p>
-            <p><strong>Category:</strong> {category}</p>
-            <p><strong>Description:</strong> {description}</p>
-            <p className="fw-bold text-success">
-              Price: {price}
-            </p>
-          </>
-        }
-        onConfirm={() => setShow(false)}
-      />
+
     </>
   );
 }
