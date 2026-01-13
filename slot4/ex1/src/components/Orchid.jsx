@@ -4,16 +4,7 @@ import Button from "react-bootstrap/Button";
 import ConfirmModal from "./ConfirmModal";
 import "./Orchid.css";
 
-
-function Orchid({
-  id,
-  orchidName,
-  image,
-  category,
-  description,
-  price,
-  isSpecial
-}) {
+function Orchid({ orchid }) {
   const [show, setShow] = useState(false);
 
   const handleConfirm = () => {
@@ -22,8 +13,8 @@ function Orchid({
 
   return (
     <>
-      <Card className="orchid-card h-100 text-center position-relative">
-        {isSpecial && (
+      <Card className="orchid-card text-center position-relative">
+        {orchid.isSpecial && (
           <span className="badge bg-danger special-badge">
             Special
           </span>
@@ -31,16 +22,16 @@ function Orchid({
 
         <Card.Img
           variant="top"
-          src={image}
+          src={orchid.image}
           className="orchid-img"
-          alt={orchidName}
+          alt={orchid.orchidName}
         />
 
         <Card.Body>
-          <Card.Title>{orchidName}</Card.Title>
+          <Card.Title>{orchid.orchidName}</Card.Title>
 
           <Card.Subtitle className="mb-3 text-muted">
-            Category: {category}
+            Category: {orchid.category}
           </Card.Subtitle>
 
           <Button onClick={() => setShow(true)}>
@@ -52,15 +43,19 @@ function Orchid({
       <ConfirmModal
         show={show}
         handleClose={() => setShow(false)}
-        title={orchidName}
+        title={orchid.orchidName}
         body={
           <>
-            <img src={image} alt={orchidName} className="img-fluid mb-2" />
-            <p><strong>ID:</strong> {id}</p>
-            <p><strong>Category:</strong> {category}</p>
-            <p><strong>Description:</strong> {description}</p>
+            <img
+              src={orchid.image}
+              alt={orchid.orchidName}
+              className="img-fluid mb-2"
+            />
+            <p><strong>ID:</strong> {orchid.id}</p>
+            <p><strong>Category:</strong> {orchid.category}</p>
+            <p><strong>Description:</strong> {orchid.description}</p>
             <p className="fw-bold text-success">
-              Price: {price}
+              Price: {orchid.price}
             </p>
           </>
         }
@@ -69,4 +64,5 @@ function Orchid({
     </>
   );
 }
+
 export default Orchid;
