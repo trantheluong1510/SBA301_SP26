@@ -70,7 +70,7 @@ export default function ListOfOrchids() {
     try {
       const payload = {
         ...data,
-        category: data.categoryID ? { categoryID: parseInt(data.categoryID, 10) } : null
+        category: data.categoryID ? { categoryId: parseInt(data.categoryID, 10) } : null
       };
       delete payload.categoryID;
       await axios.post(apiBase, payload, {
@@ -215,7 +215,7 @@ export default function ListOfOrchids() {
                   Select a category
                 </option>
                 {categories.map((c) => (
-                  <option key={c.categoryID} value={c.categoryID}>
+                  <option key={c.categoryId} value={c.categoryId}>
                     {c.categoryName}
                   </option>
                 ))}

@@ -36,7 +36,7 @@ export default function EditOrchid() {
       setApi(response.data);
       reset({
         ...response.data,
-        categoryID: response.data?.category?.categoryID || ''
+        categoryID: response.data?.category?.categoryId || ''
       });
     } catch (error) {
       console.error(error);
@@ -57,7 +57,7 @@ export default function EditOrchid() {
     try {
       const payload = {
         ...data,
-        category: data.categoryID ? { categoryID: parseInt(data.categoryID, 10) } : null
+        category: data.categoryID ? { categoryId: parseInt(data.categoryID, 10) } : null
       };
       delete payload.categoryID;
       await axios.put(`${apiBase}/${id}`, payload, {
@@ -148,7 +148,7 @@ export default function EditOrchid() {
                       Select a category
                     </option>
                     {categories.map((c) => (
-                      <option key={c.categoryID} value={c.categoryID}>
+                      <option key={c.categoryId} value={c.categoryId}>
                         {c.categoryName}
                       </option>
                     ))}

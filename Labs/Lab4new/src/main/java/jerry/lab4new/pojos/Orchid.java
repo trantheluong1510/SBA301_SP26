@@ -1,5 +1,6 @@
 package jerry.lab4new.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,9 +30,9 @@ public class Orchid {
     @Column(name = "orchid_description")
     private String orchidDescription;
 
-    @NotBlank(message = "Category must not be blank")
-    @Column(name = "orchid_category")
-    private String orchidCategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(name = "is_attractive")
     private boolean attractive;
@@ -39,4 +40,15 @@ public class Orchid {
     @NotBlank(message = "Image URL must not be blank")
     @Column(name = "orchid_url")
     private String orchidUrl;
+
+    // Backward compatibility for existing service code
+    @JsonIgnore
+    public Category getOrchidCategory() {
+        return this.category;
+    }
+
+    @JsonIgnore
+    public void setOrchidCategory(Category category) {
+        this.category = category;
+    }
 }

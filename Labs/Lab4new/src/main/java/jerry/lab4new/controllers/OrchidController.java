@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import jerry.lab4new.exceptions.ResourceNotFoundException;
+import jerry.lab4new.pojos.Category;
+import jerry.lab4new.services.ICategoryService;
 
 @RestController
 @CrossOrigin
@@ -18,27 +21,37 @@ public class OrchidController {
     @Autowired
     private IOrchidService orchidService;
 
-    @GetMapping("/")
+    @Autowired
+    private ICategoryService categoryService;
+
+    @GetMapping({"", "/"})
     public ResponseEntity<List<Orchid>> fetchAll() {
         List<Orchid> orchids = orchidService.findAll();
         return ResponseEntity.ok(orchids);
     }
 
-    @PostMapping("/")
+    @PostMapping({"", "/"})
     @ResponseStatus(HttpStatus.CREATED)
     public Orchid insertOrchid(@Valid @RequestBody Orchid orchid) {
         return orchidService.insertOrchid(orchid);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Orchid>> getOrchidById(@PathVariable int id) {
-        Optional<Orchid> orchid = orchidService.getOrchidById(id);
+    public ResponseEntity<Orchid> getOrchidById(@PathVariable int id) {
+        Orchid orchid = orchidService.getOrchidById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Orchid not found with id: " + id)
+                );
         return ResponseEntity.ok(orchid);
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<Orchid> updateOrchid(@PathVariable int id, @RequestBody Orchid orchid) {
-        Orchid updatedOrchid = orchidService.updateOrchid(id, orchid);
+    public ResponseEntity<Orchid> updateOrchid(@PathVariable int id, @Valid @RequestBody Orchid payload) {
+        orchidService.getOrchidById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Orchid not found with id: " + id));
+        payload.setOrchidID(id);
+        Orchid updatedOrchid = orchidService.updateOrchid(id, payload);
         return ResponseEntity.ok(updatedOrchid);
     }
 
