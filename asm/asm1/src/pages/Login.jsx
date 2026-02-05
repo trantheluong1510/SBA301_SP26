@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -9,6 +9,9 @@ import { login as loginApi } from "../api";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const incomingMsg = location.state?.message || "";
 
   const [state, setState] = useState({
     email: "",
@@ -39,7 +42,7 @@ function LoginPage() {
       setState((s) => ({ ...s, loading: true, error: "" }));
       const user = await loginApi({ email, password });
       try { localStorage.setItem("auth_user", JSON.stringify(user)); } catch {}
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       const status = err?.status || 0;
       let msg = (err?.message || "").trim();
@@ -76,6 +79,9 @@ function LoginPage() {
           <Card.Body className="p-4 p-md-5">
             <h3 className="text-center mb-4">Welcome back</h3>
 
+            {incomingMsg && !error && (
+              <Alert variant="warning">{incomingMsg}</Alert>
+            )}
             {error && <Alert variant="danger">{error}</Alert>}
 
             <Form noValidate validated={validated} onSubmit={handleSubmit}>

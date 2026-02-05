@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import { logout as logoutApi } from "../api";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -13,9 +14,9 @@ export default function Header() {
       role = u?.accountRole === 1 ? "Admin" : u?.accountRole === 2 ? "Staff" : "";
     }
   } catch {}
-  const onLogout = () => {
-    try { localStorage.removeItem("auth_user"); } catch {}
-    navigate("/login");
+  const onLogout = async () => {
+    try { await logoutApi(); } catch {}
+    navigate("/login", { replace: true, state: { message: "Bạn đã đăng xuất." } });
   };
   return (
     <div className="header">

@@ -8,6 +8,7 @@ import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import Toaster from "./components/Toaster.jsx";
+import RequireAuth from "./components/RequireAuth.jsx";
 
 function App() {
   return (
@@ -18,7 +19,14 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         {/* Admin layout routes */}
-        <Route path="/" element={<AdminLayout />}>
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <AdminLayout />
+            </RequireAuth>
+          }
+        >
           <Route index element={<Dashboard />} />
           <Route path="category" element={<Category />} />
           <Route path="news" element={<News />} />
